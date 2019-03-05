@@ -1,5 +1,6 @@
 
-require_relative'./board.rb'
+# require_relative'./board.rb'
+require 'colorize'
 
 class Tile
   attr_reader :is_bomb
@@ -24,8 +25,20 @@ class Tile
   def reveal
   end
 
+  def inspect
+    @is_bomb.inspect
+  end
+
+  def render_tile
+    @is_bomb ? colorize(' X ') : colorize(' O ')
+  end
+
+  def colorize(val)
+    val.colorize(:background =>:light_blue, :color => :black)
+  end
+
   
 end
 
 t = Tile.new(true)
-p t
+# String.color_samples
