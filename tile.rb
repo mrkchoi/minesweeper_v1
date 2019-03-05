@@ -34,11 +34,11 @@ class Tile
   end
 
   def colorize(val)
-    val.colorize(:background =>:light_blue, :color => :black)
+    val.colorize(:background =>:light_white, :color => :black)
   end
 
   
 end
 
-t = Tile.new(true)
+# t = Tile.new(true)
 # String.color_samples

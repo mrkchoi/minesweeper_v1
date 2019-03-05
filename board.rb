@@ -47,14 +47,15 @@ class Board
   ################################
   
   def render_grid
-    print "  0  1  2  3  4  5  6  7  8 \n"
+    print "\n\n    0  1  2  3  4  5  6  7  8 \n"
     @grid.each_with_index do |row, row_i|
-      print "#{row_i}"
+      print " #{row_i} "
       row.each_with_index do |col, col_i|
         print "#{@grid[row_i][col_i].render_tile}"
       end
       print "\n"
     end
+    print "\n\n"
   end
   
   ################################
