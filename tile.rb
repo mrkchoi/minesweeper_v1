@@ -4,9 +4,10 @@ require 'colorize'
 
 class Tile
   attr_reader :is_bomb
-  attr_accessor :is_flagged, :is_revealed
+  attr_accessor :is_flagged, :is_revealed, :position
 
-  def initialize(is_bomb)
+  def initialize(position, is_bomb)
+    @position = position
     @is_bomb = is_bomb
     @is_flagged = false
     @is_revealed = false
@@ -26,7 +27,7 @@ class Tile
   end
 
   def inspect
-    @is_bomb.inspect
+    {'position' => @position, 'is_bomb' => @is_bomb}.inspect
   end
 
   def render_tile

@@ -20,15 +20,16 @@ class Board
     @grid.each_with_index do |row, row_i|
       row.each_with_index do |col, col_i|
         if current_num_of_bombs < total_bomb_count
-          @grid[row_i][col_i] = Tile.new(true)
+          @grid[row_i][col_i] = Tile.new([row_i, col_i], true)
           current_num_of_bombs += 1
         else
-          @grid[row_i][col_i] = Tile.new(false)
+          @grid[row_i][col_i] = Tile.new([row_i, col_i], false)
         end
       end
     end
 
     shuffle_grid_tiles
+    remap_tile_coordinates
   end
 
   def total_num_of_bombs
@@ -40,6 +41,14 @@ class Board
 
   def shuffle_grid_tiles
     @grid = @grid.transpose.map(&:shuffle).transpose.map(&:shuffle)
+  end
+
+  def remap_tile_coordinates
+    @grid.each_with_index do |row, row_i|
+      row.each.with_index do |col, col_i|
+        @grid[row_i][col_i].position = [row_i, col_i]
+      end
+    end
   end
 
   ################################
