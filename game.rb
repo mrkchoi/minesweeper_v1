@@ -2,11 +2,13 @@
 require_relative './board.rb'
 
 class Game
-  attr_accessor :board
+  attr_accessor :board, :win, :lose
 
   def initialize(board)
     @board = board
-
+    @current_move = nil
+    @win = false
+    @lose = false
   end
   
 
@@ -21,6 +23,14 @@ class Game
     until win? || lose?
       play_round
       system('clear')
+    end
+
+    if win?
+      render_grid
+      display_winning_message
+    elsif lose?
+      render_grid
+      display_losing_message
     end
 
 
@@ -60,6 +70,7 @@ end
     game_directions
     render_grid
     player_move 
+    bomb_revealed?(@current_move)
   end
 
   def render_grid
@@ -74,33 +85,40 @@ end
     print "Enter your move:\n> "
     move = gets.chomp
 
-    #################################################
-    # ADD MOVE VALIDATION METHOD IN BOARD CLASS
     if @board.valid_move?(move)
       formatted_move = @board.format_move(move)
+      @current_move = formatted_move
       @board.update_board_with_player_move(formatted_move)
     else
       player_move
     end
   end
 
+  def bomb_revealed?(current_move)
+    if @board.grid[current_move[1][0]][current_move[1][1]].is_revealed && @board.grid[current_move[1][0]][current_move[1][1]].is_bomb
+      @lose = true
+    end
+  end
 
   ################################
   # GAME END
   ################################    
 
   def win?
-    false
+    @win
   end
 
   def lose?
-    false
+    @lose
   end
 
   def display_winning_message
   end
 
   def display_losing_message
+    print "\n\n************************\n"
+    print "Game over!"
+    print "\n************************\n\n"
   end
 end
 

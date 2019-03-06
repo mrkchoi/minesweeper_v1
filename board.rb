@@ -95,7 +95,6 @@ class Board
     move_action = move[0].upcase == 'R' || move[0].upcase == 'F'
     move_coord_1 = move[1].to_i >= 0 && move[1].to_i <= 8
     move_coord_2 = move[2].to_i >= 0 && move[2].to_i <= 8
-    debugger
     move_not_previously_revealed = !@grid[move[1].to_i][move[2].to_i].is_revealed
 
     move_as_string && move_length && move_action && move_coord_1 && move_coord_2 && move_not_previously_revealed

@@ -62,8 +62,16 @@ class Tile
   def reveal_tile
     # print "Tile at #{@position} revealed!"
     @is_revealed = true
+    reveal_neighbors(@neighbors)
   end
 
+
+  ################################
+  # REVEAL NEIGHBOR TILE(S)
+  ################################  
+  def reveal_neighbors(neighbors)
+    
+  end
 
   ################################
   # FLAG TILE
