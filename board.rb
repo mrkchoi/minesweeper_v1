@@ -97,5 +97,6 @@ b = Board.new
 b.load_grid_with_tiles
 # debugger
 b.render_grid
-# b.grid[4][4].find_neighbors
+b.grid[4][4].reveal
+b.render_grid
 # b.grid[4][4].calculate_neighboring_bombs

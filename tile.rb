@@ -3,7 +3,7 @@
 require 'colorize'
 
 class Tile
-  attr_reader :is_bomb
+  attr_reader :is_bomb, :neighbors
   attr_accessor :is_flagged, :is_revealed, :position, :board
 
   def initialize(position, is_bomb)
@@ -23,11 +23,8 @@ class Tile
   ################################  
 
   def find_neighbors
-    # locate coordinates of all possible neighbors
     @neighbors = []
 
-    # => [1,1]
-    # find all unique combinations
     x_range = ((@position[0] - 1)..(@position[0] + 1)).to_a
     y_range = ((@position[1] - 1)..(@position[1] + 1)).to_a
     
@@ -51,14 +48,24 @@ class Tile
     p @neighboring_bomb_count
   end
 
-  def reveal
-  end
-
   # def inspect
   #   # {'position' => @position, 'is_bomb' => @is_bomb, 'is_flagged' => @is_flagged, 'is_revealed' => @is_revealed}.inspect
 
   #   {'pos' => @position}.inspect
   # end
+
+
+  ################################
+  # REVEAL TILES
+  ################################  
+
+  def reveal
+    # if !self.is_bomb
+    #   self.is_revealed == true
+    # end    
+
+    
+  end
 
 
   ################################
