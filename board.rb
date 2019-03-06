@@ -30,6 +30,7 @@ class Board
 
     shuffle_grid_tiles
     remap_tile_coordinates
+    pass_board_to_tiles
   end
 
   def total_num_of_bombs
@@ -47,6 +48,14 @@ class Board
     @grid.each_with_index do |row, row_i|
       row.each.with_index do |col, col_i|
         @grid[row_i][col_i].position = [row_i, col_i]
+      end
+    end
+  end
+
+  def pass_board_to_tiles
+    @grid.each_with_index do |row, row_i|
+      row.each.with_index do |col, col_i|
+        @grid[row_i][col_i].board = @grid
       end
     end
   end
@@ -78,3 +87,4 @@ b = Board.new
 b.load_grid_with_tiles
 # debugger
 b.render_grid
+p b.grid

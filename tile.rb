@@ -4,13 +4,15 @@ require 'colorize'
 
 class Tile
   attr_reader :is_bomb
-  attr_accessor :is_flagged, :is_revealed, :position
+  attr_accessor :is_flagged, :is_revealed, :position, :board
 
   def initialize(position, is_bomb)
     @position = position
     @is_bomb = is_bomb
     @is_flagged = false
-    @is_revealed = false
+    @is_revealed = true
+    
+    @board = nil
     @neighbors = nil
     @neighboring_bomb_count = 0
   end
@@ -27,15 +29,34 @@ class Tile
   end
 
   def inspect
-    {'position' => @position, 'is_bomb' => @is_bomb}.inspect
+    # {'position' => @position, 'is_bomb' => @is_bomb, 'is_flagged' => @is_flagged, 'is_revealed' => @is_revealed}.inspect
+
+    {'pos' => @position}.inspect
   end
 
   def render_tile
-    @is_bomb ? colorize(' X ') : colorize(' O ')
+    if @is_flagged
+      colorize(' F ')
+    elsif @is_revealed && @neighboring_bomb_count == 0
+      colorize('   ')
+    elsif @is_revealed
+      colorize(" #{@neighboring_bomb_count} ")
+    else
+      colorize(' * ')
+    end
   end
 
   def colorize(val)
-    val.colorize(:background =>:light_white, :color => :black)
+    case val
+    when ' F '
+      val.colorize(:background =>:red, :color => :white)
+    when ' _ '
+      val.colorize(:background =>:white, :color => :black)
+    when ' * '
+      val.colorize(:background =>:white, :color => :black)
+    else
+      val.colorize(:background =>:white, :color => :red)
+    end
   end
 
   
