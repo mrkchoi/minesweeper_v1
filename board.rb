@@ -35,7 +35,7 @@ class Board
 
   def total_num_of_bombs
     total_grid_size = @grid.length ** 2
-    percentage_that_are_bombs = 10
+    percentage_that_are_bombs = 20
     total_bombs = (total_grid_size * (percentage_that_are_bombs / 100.0)).round
     total_bombs
   end
@@ -87,4 +87,5 @@ b = Board.new
 b.load_grid_with_tiles
 # debugger
 b.render_grid
-p b.grid
+b.grid[4][4].find_neighbors
+b.grid[4][4].calculate_neighboring_bombs
