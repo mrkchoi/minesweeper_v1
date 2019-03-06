@@ -87,16 +87,25 @@ class Board
   end
   
   ################################
-  # LOAD GRID WITH TILES
+  # VALIDATE MOVE
   ################################  
+  def valid_move?(move) # => 'r00'
+    formatted_move = format_move(move)
+  end
 
 
+  # => 'r00' => ['R', [0,0]]
+  # => 'f00' => ['F', [0,0]]
+  def format_move(move)
+    
+  end
+
+
+  ################################
+  # UPDATE BOARD WITH PLAYER MOVE
+  ################################  
+  def update_board_with_player_move(move)
+    
+  end
 end
 
-b = Board.new
-b.load_grid_with_tiles
-# debugger
-b.render_grid
-b.grid[4][4].reveal
-b.render_grid
-# b.grid[4][4].calculate_neighboring_bombs

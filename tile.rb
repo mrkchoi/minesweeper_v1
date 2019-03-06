@@ -44,8 +44,8 @@ class Tile
     @neighbors.each do |neighbor_pos|
       @neighboring_bomb_count += 1 if @board[neighbor_pos[0]][neighbor_pos[1]].is_bomb
     end
-    p @neighbors
-    p @neighboring_bomb_count
+    # p @neighbors
+    # p @neighboring_bomb_count
   end
 
   # def inspect
