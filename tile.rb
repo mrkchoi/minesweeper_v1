@@ -71,7 +71,7 @@ class Tile
 
   def flag_tile
     # print "Tile at #{@position} flagged!"
-    @is_flagged = true
+    @is_flagged ? @is_flagged = false : @is_flagged = true
   end
 
 
