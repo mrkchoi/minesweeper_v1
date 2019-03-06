@@ -3,7 +3,7 @@
 require 'colorize'
 
 class Tile
-  attr_reader :is_bomb, :neighbors
+  attr_reader :is_bomb, :neighbors, :neighboring_bomb_count
   attr_accessor :is_flagged, :is_revealed, :position, :board
 
   def initialize(position, is_bomb)
@@ -44,8 +44,6 @@ class Tile
     @neighbors.each do |neighbor_pos|
       @neighboring_bomb_count += 1 if @board[neighbor_pos[0]][neighbor_pos[1]].is_bomb
     end
-    # p @neighbors
-    # p @neighboring_bomb_count
   end
 
   # def inspect
@@ -59,26 +57,41 @@ class Tile
   # REVEAL TILE
   ################################  
 
-  def reveal_tile
-    # print "Tile at #{@position} revealed!"
-    @is_revealed = true
-    reveal_neighbors(@neighbors)
+  def reveal_tile(position) # => [0,0]
+    x, y = position
+    return if @board[x][y].is_flagged
+    @board[x][y].is_revealed = true
+    return if @board[x][y].neighboring_bomb_count > 0
+    @board[x][y].neighbors.each do |neighbor_pos|
+      x, y = neighbor_pos
+      reveal_tile(neighbor_pos) unless @board[x][y].is_revealed == true || @board[x][y].is_bomb
+    end
+    # reveal_neighbors(self)
   end
 
 
+  # [[3, 3], [3, 4], [3, 5], [4, 3], [4, 5], [5, 3], [5, 4], [5, 5]]
   ################################
   # REVEAL NEIGHBOR TILE(S)
   ################################  
-  def reveal_neighbors(neighbors)
-    
-  end
+  # def reveal_neighbors(tile)
+  #   x, y = tile.position
+  #   return if @board[x][y].is_flagged
+  #   @board[x][y].is_revealed = true
+  #   return if @board[x][y].neighboring_bomb_count > 0
+
+  #   neighbors = tile.neighbors
+  #   neighbors.each do |neighbor_pos|
+  #     x,y = neighbor_pos
+  #     reveal_tile(@board[x][y]) unless @board[x][y].is_revealed == false || @board[x][y].is_bomb
+  #   end
+  # end
 
   ################################
   # FLAG TILE
   ################################  
 
   def flag_tile
-    # print "Tile at #{@position} flagged!"
     @is_flagged ? @is_flagged = false : @is_flagged = true
   end
 
@@ -98,19 +111,6 @@ class Tile
     else
       colorize(' * ')
     end
-    # if @is_bomb
-    #   colorize(' B ')
-    # elsif @is_flagged
-    #   colorize(' F ')
-    # elsif @is_revealed && @neighboring_bomb_count == 0
-    #   colorize('   ')
-    # elsif @is_revealed
-    #   colorize(" #{@neighboring_bomb_count} ")
-    # elsif @neighboring_bomb_count > 0
-    #   colorize(" #{@neighboring_bomb_count} ")
-    # else
-    #   colorize(' * ')
-    # end
   end
 
   def colorize(val)

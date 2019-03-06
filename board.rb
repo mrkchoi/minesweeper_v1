@@ -118,7 +118,7 @@ class Board
   ################################  
   def update_board_with_player_move(move) # => ['R', [0, 0]]
     if move[0] == 'R'
-      grid[move[1][0]][move[1][1]].reveal_tile
+      grid[move[1][0]][move[1][1]].reveal_tile(move[1])
     elsif move[0] == 'F'
       grid[move[1][0]][move[1][1]].flag_tile
     end

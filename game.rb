@@ -80,7 +80,7 @@ end
   end
 
   def game_directions
-    print "\n\nTo mark a square you think is a bomb, type 'f' + the coordinates (e.g. 'f01').\nTo reveal a square, type 'r' + the coordinates (e.g. 'r13')"
+    print "\n\nTo flag a square you think is a bomb, type 'f' + the coordinates (e.g. 'f01').\nTo reveal a square, type 'r' + the coordinates (e.g. 'r13')"
   end
 
   def player_move
