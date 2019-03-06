@@ -38,21 +38,17 @@ class Tile
     @neighbors.select! {|el| el != @position}
 
     @neighbors.select! {|el| (el[0] >= 0 && el[0] <= 8) && (el[1] >= 0 && el[1] <= 8)}
-    p @neighbors
   end
 
   ################################
   # CALCULATE NEIGHBORING BOMBS
   ################################  
   def calculate_neighboring_bombs
-    # look at all possible neighbors
-    #  => [[3, 3], [3, 4], [3, 5], [4, 3], [4, 5], [5, 3], [5, 4], [5, 5]]
     @neighbors.each do |neighbor_pos|
-      #  => [3, 3]
-      if @board[neighbor_pos[0]][neighbor_pos[1]].is_bomb
-        @neighboring_bomb_count += 1
-      end
+      @neighboring_bomb_count += 1 if @board[neighbor_pos[0]][neighbor_pos[1]].is_bomb
     end
+    p @neighbors
+    p @neighboring_bomb_count
   end
 
   def reveal
@@ -69,11 +65,15 @@ class Tile
   # RENDER COLORIZED TILE 
   ################################    
   def render_tile
-    if @is_flagged
+    if @is_bomb
+      colorize(' B ')
+    elsif @is_flagged
       colorize(' F ')
     elsif @is_revealed && @neighboring_bomb_count == 0
       colorize('   ')
     elsif @is_revealed
+      colorize(" #{@neighboring_bomb_count} ")
+    elsif @neighboring_bomb_count > 0
       colorize(" #{@neighboring_bomb_count} ")
     else
       colorize(' * ')
@@ -82,6 +82,8 @@ class Tile
 
   def colorize(val)
     case val
+    when ' B '
+      val.colorize(:background =>:red, :color => :white)
     when ' F '
       val.colorize(:background =>:red, :color => :white)
     when ' _ '

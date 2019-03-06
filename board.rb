@@ -31,11 +31,12 @@ class Board
     shuffle_grid_tiles
     remap_tile_coordinates
     pass_board_to_tiles
+    find_all_tile_neighbors_with_bomb_count
   end
 
   def total_num_of_bombs
     total_grid_size = @grid.length ** 2
-    percentage_that_are_bombs = 20
+    percentage_that_are_bombs = 10
     total_bombs = (total_grid_size * (percentage_that_are_bombs / 100.0)).round
     total_bombs
   end
@@ -56,6 +57,15 @@ class Board
     @grid.each_with_index do |row, row_i|
       row.each.with_index do |col, col_i|
         @grid[row_i][col_i].board = @grid
+      end
+    end
+  end
+
+  def find_all_tile_neighbors_with_bomb_count
+    @grid.each do |row|
+      row.each do |tile|
+        tile.find_neighbors
+        tile.calculate_neighboring_bombs
       end
     end
   end
@@ -87,5 +97,5 @@ b = Board.new
 b.load_grid_with_tiles
 # debugger
 b.render_grid
-b.grid[4][4].find_neighbors
-b.grid[4][4].calculate_neighboring_bombs
+# b.grid[4][4].find_neighbors
+# b.grid[4][4].calculate_neighboring_bombs
