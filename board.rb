@@ -90,22 +90,36 @@ class Board
   # VALIDATE MOVE
   ################################  
   def valid_move?(move) # => 'r00'
-    formatted_move = format_move(move)
+    move_as_string = move.is_a?(String)
+    move_length = move.length == 3
+    move_action = move[0].upcase == 'R' || move[0].upcase == 'F'
+    move_coord_1 = move[1].to_i >= 0 && move[1].to_i <= 8
+    move_coord_2 = move[2].to_i >= 0 && move[2].to_i <= 8
+
+    move_as_string && move_length && move_action && move_coord_1 && move_coord_2
   end
 
 
   # => 'r00' => ['R', [0,0]]
   # => 'f00' => ['F', [0,0]]
   def format_move(move)
-    
+    move_action = move[0].upcase
+    move_coord_1 = move[1].to_i
+    move_coord_2 = move[2].to_i
+
+    [move_action, [move_coord_1, move_coord_2]]
   end
 
 
   ################################
   # UPDATE BOARD WITH PLAYER MOVE
   ################################  
-  def update_board_with_player_move(move)
-    
+  def update_board_with_player_move(move) # => ['R', [0, 0]]
+    if move[0] == 'R'
+      grid[move[1][0]][move[1][1]].reveal_tile
+    elsif move[0] == 'F'
+      grid[move[1][0]][move[1][1]].flag_tile
+    end
   end
 end
 

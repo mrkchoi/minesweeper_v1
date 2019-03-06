@@ -56,15 +56,22 @@ class Tile
 
 
   ################################
-  # REVEAL TILES
+  # REVEAL TILE
   ################################  
 
-  def reveal
-    # if !self.is_bomb
-    #   self.is_revealed == true
-    # end    
+  def reveal_tile
+    # print "Tile at #{@position} revealed!"
+    @is_revealed = true
+  end
 
-    
+
+  ################################
+  # FLAG TILE
+  ################################  
+
+  def flag_tile
+    # print "Tile at #{@position} flagged!"
+    @is_flagged = true
   end
 
 
@@ -72,33 +79,44 @@ class Tile
   # RENDER COLORIZED TILE 
   ################################    
   def render_tile
-    if @is_bomb
+    if @is_revealed && @is_bomb
       colorize(' B ')
-    elsif @is_flagged
-      colorize(' F ')
     elsif @is_revealed && @neighboring_bomb_count == 0
-      colorize('   ')
-    elsif @is_revealed
+      colorize(' _ ')
+    elsif @is_revealed && @neighboring_bomb_count > 0
       colorize(" #{@neighboring_bomb_count} ")
-    elsif @neighboring_bomb_count > 0
-      colorize(" #{@neighboring_bomb_count} ")
+    elsif @is_flagged
+      colorize(" F ")
     else
       colorize(' * ')
     end
+    # if @is_bomb
+    #   colorize(' B ')
+    # elsif @is_flagged
+    #   colorize(' F ')
+    # elsif @is_revealed && @neighboring_bomb_count == 0
+    #   colorize('   ')
+    # elsif @is_revealed
+    #   colorize(" #{@neighboring_bomb_count} ")
+    # elsif @neighboring_bomb_count > 0
+    #   colorize(" #{@neighboring_bomb_count} ")
+    # else
+    #   colorize(' * ')
+    # end
   end
 
   def colorize(val)
     case val
     when ' B '
-      val.colorize(:background =>:red, :color => :white)
+      val.colorize(:background =>:light_red, :color => :white)
     when ' F '
-      val.colorize(:background =>:red, :color => :white)
+      val.colorize(:background =>:light_red, :color => :white)
     when ' _ '
       val.colorize(:background =>:white, :color => :black)
     when ' * '
       val.colorize(:background =>:white, :color => :black)
     else
-      val.colorize(:background =>:white, :color => :red)
+      val.colorize(:background =>:white, :color => :light_blue)
     end
   end
 

@@ -20,6 +20,7 @@ class Game
 
     until win? || lose?
       play_round
+      system('clear')
     end
 
 
@@ -39,7 +40,7 @@ def begin_game_prompt
   if user_input.downcase == 'y'
     print "Good luck!"
     # sleep(1)
-    system('clear')
+    system("clear")
   else
     begin_game_prompt
   end
@@ -58,8 +59,7 @@ end
   def play_round
     game_directions
     render_grid
-    player_move
-    
+    player_move 
   end
 
   def render_grid
@@ -77,12 +77,13 @@ end
     #################################################
     # ADD MOVE VALIDATION METHOD IN BOARD CLASS
     if @board.valid_move?(move)
-      @board.update_board_with_player_move(move)
+      formatted_move = @board.format_move(move)
+      @board.update_board_with_player_move(formatted_move)
     else
       player_move
     end
   end
-  
+
 
   ################################
   # GAME END
