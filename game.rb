@@ -117,7 +117,7 @@ end
 
   def display_losing_message
     print "\n\n************************\n"
-    print "Game over!"
+    print "****** Game over! ******"
     print "\n************************\n\n"
   end
 end
