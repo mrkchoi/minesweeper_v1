@@ -1,24 +1,27 @@
 
+require 'yaml'
 require_relative './board.rb'
 
 class Game
-  attr_accessor :board, :win, :lose
+  attr_accessor :board, :win, :lose, :resume_saved_game
 
   def initialize(board)
     @board = board
     @current_move = nil
     @win = false
     @lose = false
+    @resume_saved_game = false
   end
-  
 
   ################################
   # START GAME
   ################################    
   def start_game
-    welcome_prompt
-    begin_game_prompt
-    initialize_board
+    if @resume_saved_game == false
+      welcome_prompt
+      begin_game_prompt
+      initialize_board
+    end
 
     until win? || lose?
       play_round
@@ -32,41 +35,35 @@ class Game
       render_grid
       display_losing_message
     end
-
-
   end
 
+  def welcome_prompt
+    system('clear')
+    print "\n\nMinesweeper is a single-player puzzle video game. The objective of the game \nis to clear a rectangular board containing hidden \"mines\" or bombs without\ndetonating any of them, with help from clues about the number of neighboring\nmines in each field."
 
-def welcome_prompt
-  system('clear')
-  print "\n\nMinesweeper is a single-player puzzle video game. The objective of the game \nis to clear a rectangular board containing hidden \"mines\" or bombs without\ndetonating any of them, with help from clues about the number of neighboring\nmines in each field."
-
-  print "\n\nYou are presented with a board of squares. Some squares contain mines (bombs),\nothers don't. If you select a square containing a bomb, you lose. If you manage\nto click all the squares (without clicking on any bombs) you win.\n\nClicking a square which doesn't have a bomb reveals the number of neighbouring\nsquares containing bombs. Use this information plus some\nguess work to avoid the bombs.\n\n"
-end
-
-def begin_game_prompt
-  print "Ready to play? (Y/N)\n> "
-  user_input = gets.chomp
-
-  if user_input.downcase == 'y'
-    print "Good luck!"
-    # sleep(1)
-    system("clear")
-  else
-    begin_game_prompt
+    print "\n\nYou are presented with a board of squares. Some squares contain mines (bombs),\nothers don't. If you select a square containing a bomb, you lose. If you manage\nto click all the squares (without clicking on any bombs) you win.\n\nClicking a square which doesn't have a bomb reveals the number of neighbouring\nsquares containing bombs. Use this information plus some\nguess work to avoid the bombs.\n\n"
   end
-end
 
+  def begin_game_prompt
+    print "Ready to play? (Y/N)\n> "
+    user_input = gets.chomp
 
-def initialize_board
-  @board.load_grid_with_tiles
-end
+    if user_input.downcase == 'y'
+      print "Good luck!"
+      system("clear")
+    else
+      begin_game_prompt
+    end
+  end
+
+  def initialize_board
+    @board.load_grid_with_tiles
+  end
 
 
   ################################
   # PLAY ROUND
   ################################    
-
   def play_round
     game_directions
     render_grid
@@ -80,7 +77,7 @@ end
   end
 
   def game_directions
-    print "\n\nTo flag a square you think is a bomb, type 'f' + the coordinates (e.g. 'f01').\nTo reveal a square, type 'r' + the coordinates (e.g. 'r13')"
+    print "\n\nTo flag a square you think is a bomb, type 'f' + the coordinates (e.g. 'f01').\nTo reveal a square, type 'r' + the coordinates (e.g. 'r13')\nTo save game, enter 1"
   end
 
   def player_move
@@ -91,6 +88,12 @@ end
       formatted_move = @board.format_move(move)
       @current_move = formatted_move
       @board.update_board_with_player_move(formatted_move)
+    elsif move == '1'
+      print "Name your saved game:\n> " 
+      @resume_saved_game = true
+      filename = gets.chomp
+      File.write(filename, YAML.dump(self))
+      
     else
       player_move
     end
@@ -103,8 +106,6 @@ end
   end
 
   def all_tiles_revealed?
-    # Look at all tiles on board
-    # Make sure there are all tiles that are not bombs are revealed
     all_revealed = true
 
     @board.grid.each_with_index do |row, row_i|
@@ -144,5 +145,11 @@ end
 end
 
 
-g = Game.new(Board.new)
-g.start_game
+if __FILE__ == $PROGRAM_NAME
+  case ARGV.count
+  when 0
+    Game.new(Board.new).start_game
+  when 1
+    YAML.load_file(ARGV.shift).start_game
+  end
+end

@@ -1,5 +1,4 @@
 
-# require_relative'./board.rb'
 require 'colorize'
 
 class Tile
@@ -46,13 +45,6 @@ class Tile
     end
   end
 
-  # def inspect
-  #   # {'position' => @position, 'is_bomb' => @is_bomb, 'is_flagged' => @is_flagged, 'is_revealed' => @is_revealed}.inspect
-
-  #   {'pos' => @position}.inspect
-  # end
-
-
   ################################
   # REVEAL TILE
   ################################  
@@ -66,26 +58,7 @@ class Tile
       x, y = neighbor_pos
       reveal_tile(neighbor_pos) unless @board[x][y].is_revealed == true || @board[x][y].is_bomb
     end
-    # reveal_neighbors(self)
   end
-
-
-  # [[3, 3], [3, 4], [3, 5], [4, 3], [4, 5], [5, 3], [5, 4], [5, 5]]
-  ################################
-  # REVEAL NEIGHBOR TILE(S)
-  ################################  
-  # def reveal_neighbors(tile)
-  #   x, y = tile.position
-  #   return if @board[x][y].is_flagged
-  #   @board[x][y].is_revealed = true
-  #   return if @board[x][y].neighboring_bomb_count > 0
-
-  #   neighbors = tile.neighbors
-  #   neighbors.each do |neighbor_pos|
-  #     x,y = neighbor_pos
-  #     reveal_tile(@board[x][y]) unless @board[x][y].is_revealed == false || @board[x][y].is_bomb
-  #   end
-  # end
 
   ################################
   # FLAG TILE
@@ -107,7 +80,7 @@ class Tile
     elsif @is_revealed && @neighboring_bomb_count > 0
       colorize(" #{@neighboring_bomb_count} ")
     elsif @is_flagged
-      colorize(" F ")
+      colorize(" \u2691 ".encode('utf-8'))
     else
       colorize(' * ')
     end
@@ -117,7 +90,7 @@ class Tile
     case val
     when ' B '
       val.colorize(:background =>:light_red, :color => :white)
-    when ' F '
+    when "\u2691".encode('utf-8')
       val.colorize(:background =>:red, :color => :white)
     when ' _ '
       val.colorize(:background =>:white, :color => :black)
@@ -131,5 +104,3 @@ class Tile
   
 end
 
-# t = Tile.new(true)
-# String.color_samples
