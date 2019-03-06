@@ -90,6 +90,7 @@ class Board
   # VALIDATE MOVE
   ################################  
   def valid_move?(move) # => 'r00'
+    return false if move.nil? || move == ''
     move_as_string = move.is_a?(String)
     move_length = move.length == 3
     move_action = move[0].upcase == 'R' || move[0].upcase == 'F'

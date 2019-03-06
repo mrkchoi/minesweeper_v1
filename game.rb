@@ -38,6 +38,7 @@ class Game
 
 
 def welcome_prompt
+  system('clear')
   print "\n\nMinesweeper is a single-player puzzle video game. The objective of the game \nis to clear a rectangular board containing hidden \"mines\" or bombs without\ndetonating any of them, with help from clues about the number of neighboring\nmines in each field."
 
   print "\n\nYou are presented with a board of squares. Some squares contain mines (bombs),\nothers don't. If you select a square containing a bomb, you lose. If you manage\nto click all the squares (without clicking on any bombs) you win.\n\nClicking a square which doesn't have a bomb reveals the number of neighbouring\nsquares containing bombs. Use this information plus some\nguess work to avoid the bombs.\n\n"
@@ -71,6 +72,7 @@ end
     render_grid
     player_move 
     bomb_revealed?(@current_move)
+    all_tiles_revealed?
   end
 
   def render_grid
@@ -100,6 +102,22 @@ end
     end
   end
 
+  def all_tiles_revealed?
+    # Look at all tiles on board
+    # Make sure there are all tiles that are not bombs are revealed
+    all_revealed = true
+
+    @board.grid.each_with_index do |row, row_i|
+      row.each_with_index do |col, col_i|
+        if !@board.grid[row_i][col_i].is_bomb && !@board.grid[row_i][col_i].is_revealed
+          all_revealed = false
+        end
+      end
+    end
+
+    all_revealed ? @win = true : @win = false
+  end
+
   ################################
   # GAME END
   ################################    
@@ -113,6 +131,9 @@ end
   end
 
   def display_winning_message
+    print "\n\n************************\n"
+    print "****** You win!!! ******"
+    print "\n************************\n\n"
   end
 
   def display_losing_message

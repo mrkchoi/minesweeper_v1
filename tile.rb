@@ -118,11 +118,11 @@ class Tile
     when ' B '
       val.colorize(:background =>:light_red, :color => :white)
     when ' F '
-      val.colorize(:background =>:light_red, :color => :white)
+      val.colorize(:background =>:red, :color => :white)
     when ' _ '
       val.colorize(:background =>:white, :color => :black)
     when ' * '
-      val.colorize(:background =>:white, :color => :black)
+      val.colorize(:background =>:light_white, :color => :black)
     else
       val.colorize(:background =>:white, :color => :light_blue)
     end
